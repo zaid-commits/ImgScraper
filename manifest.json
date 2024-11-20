@@ -1,6 +1,6 @@
 {
     "manifest_version": 3,
-    "name": "Image Scraper",
+    "name": "Image Scrapper By Zaid",
     "version": "1.0",
     "description": "Scrapes all images from a webpage and provides download links.",
     "permissions": ["activeTab", "scripting", "downloads"],
