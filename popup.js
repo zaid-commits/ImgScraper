@@ -1,34 +1,42 @@
-document.getElementById('scrapeImages').addEventListener('click', async () => {
+let cachedImages = [];
+let isLoading = false;
+
+chrome.runtime.onMessage.addListener((message) => {
+    const imageLinks = document.getElementById('imageLinks');
+    if (message.images && message.images.length > 0) {
+        cachedImages = message.images; // Cache the images
+        displayImages(cachedImages);
+    } else {
+        imageLinks.textContent = "No images found!";
+    }
+    isLoading = false; // Reset loading state
+});
+
+// Automatically scrape images when the popup is opened
+(async () => {
+    if (isLoading) return; // Prevent multiple clicks
+    isLoading = true;
+
+    const imageLinks = document.getElementById('imageLinks');
+    imageLinks.innerHTML = "Loading..."; // Show loading indicator
+
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
     chrome.scripting.executeScript({
         target: { tabId: tab.id },
         files: ['content.js'],
     });
-});
+})();
 
-chrome.runtime.onMessage.addListener((message) => {
+function displayImages(images) {
     const imageLinks = document.getElementById('imageLinks');
-    imageLinks.innerHTML = ""; // Clear previous results
+    const imageContainers = images.map(src => {
+        return `
+            <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                <img src="${src}" style="width: 100px; margin-right: 10px;" />
+                <a href="${src}" download="${src.split('/').pop()}" style="display: block;">Download Image</a>
+            </div>
+        `;
+    }).join('');
 
-    if (message.images && message.images.length > 0) {
-        message.images.forEach(src => {
-            const imageContainer = document.createElement('div');
-            const img = document.createElement('img');
-            img.src = src;
-            img.style.width = '100px'; // Set a width for the preview
-            img.style.marginRight = '10px'; // Add some margin
-
-            const link = document.createElement('a');
-            link.href = src;
-            link.textContent = "Download Image";
-            link.download = src.split('/').pop(); // Set the filename for download
-            link.style.display = 'block';
-
-            imageContainer.appendChild(img);
-            imageContainer.appendChild(link);
-            imageLinks.appendChild(imageContainer);
-        });
-    } else {
-        imageLinks.textContent = "No images found!";
-    }
-});
+    imageLinks.innerHTML = imageContainers; // Set all images at once
+}
