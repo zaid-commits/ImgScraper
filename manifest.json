@@ -3,9 +3,9 @@
     "name": "Image Scraper",
     "version": "1.0",
     "description": "Scrapes all images from a webpage and provides download links.",
-    "permissions": ["activeTab", "scripting"],
+    "permissions": ["activeTab", "scripting", "downloads"],
     "host_permissions": ["<all_urls>"],
     "action": {
       "default_popup": "popup.html"
     }
-  }
+}
