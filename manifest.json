@@ -1,0 +1,11 @@
+{
+    "manifest_version": 3,
+    "name": "Image Scraper",
+    "version": "1.0",
+    "description": "Scrapes all images from a webpage and provides download links.",
+    "permissions": ["activeTab", "scripting"],
+    "host_permissions": ["<all_urls>"],
+    "action": {
+      "default_popup": "popup.html"
+    }
+  }

@@ -1,0 +1,22 @@
+body {
+    font-family: Arial, sans-serif;
+    padding: 10px;
+    width: 300px;
+  }
+  
+  h1 {
+    font-size: 18px;
+  }
+  
+  button {
+    padding: 10px;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  
+  #imageLinks a {
+    font-size: 14px;
+    color: blue;
+    text-decoration: underline;
+  }
+  
